@@ -9,3 +9,11 @@
     3. <s>check - Check whether JWT is valid. Return User Information if valid. Otherwise, Abort 401 Error</s>
 
   - Tools API
+
+- UnitTest
+
+  - Authentication
+
+    1. /auth/login
+    2. /auth/logout
+    3. /auth/check
