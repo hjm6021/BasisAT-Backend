@@ -1,3 +1,4 @@
+from urllib import response
 from flask import abort, make_response, request
 from flask_restful import Resource
 from config import jwtSecretKey, jwtAlgorithm
@@ -45,7 +46,6 @@ class Login(Resource):
             key="access-token",
             value=jwtToken,
             max_age=60 * 60 * 24 * 1,
-            httponly=True,
         )
 
         return response
@@ -53,9 +53,18 @@ class Login(Resource):
 
 class Logout(Resource):
     def post(self):
-        return {"type": "logout"}
+        return "", 204
 
 
 class Check(Resource):
-    def post(self):
-        return {"type": "check"}
+    def get(self):
+        jwtAccessToken = request.cookies.get("access-token")
+        if jwtAccessToken is None:
+            abort(401)
+
+        decodedJwtAccessToken = jwt.decode(
+            jwtAccessToken, jwtSecretKey, algorithms=[jwtAlgorithm]
+        )
+        del decodedJwtAccessToken["token"]
+
+        return decodedJwtAccessToken

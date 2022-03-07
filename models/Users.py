@@ -1,7 +1,8 @@
+from enum import unique
 from mongoengine import *
 import jwt
 
 
 class User(Document):
-    name = StringField(max_length=50)
-    email = StringField(max_length=120)
+    username = StringField(max_length=50, required=True, unique=True)
+    isAdmin = BooleanField(default=False, required=True)
