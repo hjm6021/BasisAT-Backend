@@ -1,10 +1,8 @@
-from urllib import response
 from flask import abort, make_response, request
 from flask_restful import Resource
 from config import jwtSecretKey, jwtAlgorithm
 from lib import authAPI
 import jwt
-from flasgger import swag_from
 
 
 def generateJwtToken(payload):
@@ -139,7 +137,7 @@ class Check(Resource):
             required: true
         responses:
           401:
-            description: Error - No JWT access-tokne in HTTP Header
+            description: Error - No JWT access-token in HTTP Header
           200:
             description: Number statistics
             schema:
