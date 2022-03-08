@@ -17,3 +17,11 @@
     1. /auth/login
     2. /auth/logout
     3. /auth/check
+
+- OpenAPI Documentation
+
+  - Authentication
+
+    1. /auth/login
+    2. /auth/logout
+    3. <s>/auth/check</s>
