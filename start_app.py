@@ -3,10 +3,13 @@ from flask_restful import Api
 from urls import addResource
 from mongoengine import connect
 import config
-
 from flask_cors import CORS
+from flasgger import Swagger
 
 app = Flask(__name__)
+
+app.config["SWAGGER"] = config.flasgger_setting
+
 # hanlde CORS error. supports_credentials=True for Cookies
 CORS(app, supports_credentials=True)
 
@@ -15,6 +18,7 @@ connect(db=config.mongoDb, host=config.mongoHost, port=config.mongoPort)
 
 api = Api(app)
 addResource(api)
+swagger = Swagger(app, template=config.flasgger_template)
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1")

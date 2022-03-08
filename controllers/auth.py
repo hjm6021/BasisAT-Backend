@@ -4,6 +4,7 @@ from flask_restful import Resource
 from config import jwtSecretKey, jwtAlgorithm
 from lib import authAPI
 import jwt
+from flasgger import swag_from
 
 
 def generateJwtToken(payload):
@@ -13,6 +14,40 @@ def generateJwtToken(payload):
 
 class Login(Resource):
     def post(self):
+        """
+        post endpoint
+        ---
+        tags:
+          - Authentication
+        parameters:
+          - name: a
+            in: query
+            type: integer
+            required: true
+            description: first number
+          - name: b
+            in: query
+            type: integer
+            required: true
+            description: second number
+        responses:
+          500:
+            description: Error The number is not integer!
+          200:
+            description: Number statistics
+            schema:
+              id: stats
+              properties:
+                sum:
+                  type: integer
+                  description: The sum of number
+                product:
+                  type: integer
+                  description: The sum of number
+                division:
+                  type: integer
+                  description: The sum of number
+        """
         username = request.json.get("username")
         password = request.json.get("password")
 
@@ -53,6 +88,40 @@ class Login(Resource):
 
 class Logout(Resource):
     def post(self):
+        """
+        post endpoint
+        ---
+        tags:
+          - Authentication
+        parameters:
+          - name: a
+            in: query
+            type: integer
+            required: true
+            description: first number
+          - name: b
+            in: query
+            type: integer
+            required: true
+            description: second number
+        responses:
+          500:
+            description: Error The number is not integer!
+          200:
+            description: Number statistics
+            schema:
+              id: stats
+              properties:
+                sum:
+                  type: integer
+                  description: The sum of number
+                product:
+                  type: integer
+                  description: The sum of number
+                division:
+                  type: integer
+                  description: The sum of number
+        """
         return "", 204
 
 

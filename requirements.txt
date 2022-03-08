@@ -4,3 +4,4 @@ mongoengine
 requests
 pyjwt
 flask_cors
+flasgger
