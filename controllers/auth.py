@@ -25,8 +25,8 @@ class Login(Resource):
             type: integer
             required: true
             description: first number
-          - name: b
-            in: query
+          - name: Cookie
+            in: header
             type: integer
             required: true
             description: second number
@@ -127,6 +127,28 @@ class Logout(Resource):
 
 class Check(Resource):
     def get(self):
+        """
+        check JWT access-token
+        ---
+        tags:
+          - Authentication
+        parameters:
+          - name: access-token
+            in: header
+            type: string
+            required: true
+        responses:
+          401:
+            description: Error - No JWT access-tokne in HTTP Header
+          200:
+            description: Number statistics
+            schema:
+              id: Users
+              properties:
+                username:
+                  type: string
+                  description: BLAS Username
+        """
         jwtAccessToken = request.cookies.get("access-token")
         if jwtAccessToken is None:
             abort(401)
