@@ -1,12 +1,15 @@
-from flask import abort, make_response, request
+from flask import abort, make_response, request, current_app
 from flask_restful import Resource
-from config import jwtSecretKey, jwtAlgorithm
 from lib import authAPI
 import jwt
 
 
 def generateJwtToken(payload):
-    jwtToken = jwt.encode(payload, jwtSecretKey, jwtAlgorithm)
+    jwtToken = jwt.encode(
+        payload,
+        current_app.config["JWT_SECRET_KEY"],
+        current_app.config["JWT_ALGORITHM"],
+    )
     return jwtToken
 
 
@@ -53,7 +56,7 @@ class Login(Resource):
         if not username or not password:
             abort(400)
 
-        # Request to BLAS API for authentication and Abort 500 if there is error
+        # Send a request to BLAS API for authentication and Abort 500 if there is error
         try:
             responseFromBLAS = authAPI.login(username, password)
         except:
@@ -152,7 +155,9 @@ class Check(Resource):
             abort(401)
 
         decodedJwtAccessToken = jwt.decode(
-            jwtAccessToken, jwtSecretKey, algorithms=[jwtAlgorithm]
+            jwtAccessToken,
+            current_app.config["JWT_SECRET_KEY"],
+            algorithms=[current_app.config["JWT_ALGORITHM"]],
         )
         del decodedJwtAccessToken["token"]
 

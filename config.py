@@ -1,17 +1,17 @@
 # BLAS API Configuration
-blasURL = "https://www.basis-service.com/blas777/api/v1/auth/login/"
+BLAS_URL = "https://www.basis-service.com/blas777/api/v1/auth/login/"
 
 # MongoDB Connection Configuration
-mongoDb = "basisAT"
-mongoHost = "localhost"
-mongoPort = 27017
+MONGODB = "basisAT"
+MONGODB_HOST = "localhost"
+MONGODB_PORT = 27017
 
 # JSON Web Tokens Configuration
-jwtSecretKey = "jwtSecretKey"
-jwtAlgorithm = "HS256"
+JWT_SECRET_KEY = "jwtSecretKey"
+JWT_ALGORITHM = "HS256"
 
 # Create an APISpec
-flasgger_template = {
+FLASGGER_TEMPLATE = {
     "swagger": "2.0",
     "info": {
         "title": "BasisAT RestAPI Documentation",
@@ -24,7 +24,7 @@ flasgger_template = {
     },
 }
 
-flasgger_setting = {
+FLASGGER_SETTING = {
     "title": "BasisAT API",
     "uiversion": 3,
     "specs_route": "/docs/",

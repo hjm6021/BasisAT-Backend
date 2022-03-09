@@ -1,12 +1,28 @@
-import unittest, sys
+import unittest, sys, re
 
 sys.path.append("..")
-from tests.test_auth import authTestCase
+from tests.auth.test_login import loginTestCase
+
+# Get all test cases which start with 'test_'
+def getAllTestCases(testCase):
+    testCaseNameExp = re.compile("test_*")
+    attributes = dir(testCase)
+    testCaseNames = list(filter(testCaseNameExp.match, attributes))
+
+    allTestCases = list(testCase(testCaseName) for testCaseName in testCaseNames)
+
+    return allTestCases
 
 
 def suite():
     suite_set = unittest.TestSuite()
-    suite_set.addTest(authTestCase("test_Login_Case1"))
+
+    # Authentication Unit Test
+    # 1. /auth/login
+    suite_set.addTests(getAllTestCases(loginTestCase))
+    # 2. /auth/logout
+    # 3. /auth/check
+
     return suite_set
 
 
