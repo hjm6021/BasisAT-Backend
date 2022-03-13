@@ -1,9 +1,9 @@
 import requests
-import config
+from flask import current_app
 
 
 def login(name, password):
     return requests.post(
-        config.blasURL,
+        current_app.config["BLAS_URL"],
         data={"name": name, "password": password},
     )

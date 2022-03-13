@@ -2,6 +2,7 @@ from flask import abort, make_response, request, current_app
 from flask_restful import Resource
 from lib import authAPI
 import jwt
+from models import User
 
 
 def generateJwtToken(payload):
@@ -73,11 +74,13 @@ class Login(Resource):
 
         token = responseFromBLAS.get("records").get("token")
 
+        user = User(username=username).registerIfNotExists()
+
         # Generate JWT Token and Set cookies with JWT Token
         payload = {"username": username, "token": token}
         jwtToken = generateJwtToken(payload)
 
-        response = make_response({"username": username})
+        response = make_response(user.to_json())
         response.set_cookie(
             key="access-token",
             value=jwtToken,
@@ -149,6 +152,9 @@ class Check(Resource):
                 username:
                   type: string
                   description: BLAS Username
+                isAdmin:
+                  type: boolean
+                  description: check whether User is admin
         """
         jwtAccessToken = request.cookies.get("access-token")
         if jwtAccessToken is None:
@@ -159,6 +165,9 @@ class Check(Resource):
             current_app.config["JWT_SECRET_KEY"],
             algorithms=[current_app.config["JWT_ALGORITHM"]],
         )
-        del decodedJwtAccessToken["token"]
 
-        return decodedJwtAccessToken
+        user = User.objects.get(username=decodedJwtAccessToken["username"])
+
+        response = make_response(user.to_json())
+
+        return response
