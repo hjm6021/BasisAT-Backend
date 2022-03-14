@@ -9,7 +9,7 @@ class Home(Resource):
     @checkJwtTokenMiddleware
     def get(self):
         """
-        Get Home Page Description
+        Get Homepage Description
         ---
         tags:
           - HomePage
@@ -39,6 +39,38 @@ class Home(Resource):
     @checkJwtTokenMiddleware
     @isAdmin
     def put(self):
+        """
+        Edit Homepage Description
+        ---
+        tags:
+          - HomePage
+        parameters:
+          - name: access-token
+            in: header
+            type: string
+            required: true
+          - name: body
+            in: body
+            required: true
+            schema:
+              required:
+                - id
+                - editor
+              properties:
+                id:
+                  type: string
+                  description: Home Description ID
+                editor:
+                  type: markdown
+                  description: The Description which needs to be updated
+        responses:
+          401:
+            description: Error - No JWT access-token in HTTP Header
+          403:
+            description: Error - No Permission
+          204:
+            description: Edit HomePage Description Successfully
+        """
         _id = request.json.get("id")
         editor = request.json.get("editor")
 

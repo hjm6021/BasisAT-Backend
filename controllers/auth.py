@@ -17,38 +17,45 @@ def generateJwtToken(payload):
 class Login(Resource):
     def post(self):
         """
-        post endpoint
+        Login
         ---
         tags:
           - Authentication
+        requestBody:
+          required: true
+          consumes:
+            application/json:
         parameters:
-          - name: a
-            in: query
-            type: integer
+          - name: body
+            in: body
             required: true
-            description: first number
-          - name: Cookie
-            in: header
-            type: integer
-            required: true
-            description: second number
-        responses:
-          500:
-            description: Error The number is not integer!
-          200:
-            description: Number statistics
             schema:
-              id: stats
+              required:
+                - username
+                - password
               properties:
-                sum:
+                username:
+                  type: string
+                  description: BLAS Username
+                password:
+                  type: string
+                  description: BLAS Password
+        responses:
+          400:
+            description: no Username or Password in Request Body
+          401:
+            description: Authentication Failed
+          200:
+            description: Login Successfully
+            schema:
+              id: Users
+              properties:
+                username:
                   type: integer
-                  description: The sum of number
-                product:
-                  type: integer
-                  description: The sum of number
-                division:
-                  type: integer
-                  description: The sum of number
+                  description: BLAS username
+                isAdmin:
+                  type: boolean
+                  description: is user administrator
         """
         username = request.json.get("username")
         password = request.json.get("password")
@@ -93,38 +100,13 @@ class Login(Resource):
 class Logout(Resource):
     def post(self):
         """
-        post endpoint
+        Logout
         ---
         tags:
           - Authentication
-        parameters:
-          - name: a
-            in: query
-            type: integer
-            required: true
-            description: first number
-          - name: b
-            in: query
-            type: integer
-            required: true
-            description: second number
         responses:
-          500:
-            description: Error The number is not integer!
-          200:
-            description: Number statistics
-            schema:
-              id: stats
-              properties:
-                sum:
-                  type: integer
-                  description: The sum of number
-                product:
-                  type: integer
-                  description: The sum of number
-                division:
-                  type: integer
-                  description: The sum of number
+          204:
+            description: Login Successfully
         """
         return "", 204
 
@@ -145,7 +127,7 @@ class Check(Resource):
           401:
             description: Error - No JWT access-token in HTTP Header
           200:
-            description: Number statistics
+            description: Check JWT Token Successfully
             schema:
               id: Users
               properties:
